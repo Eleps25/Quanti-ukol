@@ -1,8 +1,7 @@
 import './App.css'
+import ItemDetailpage from './components/ItemDetailPage/ItemDetailPage'
 import ItemList from './components/ItemList/ItemList'
-import Item from './components/Item/Item'
-import ItemDetail from './components/ItemDetail/ItemDetail'
-import ItemEdit from './components/ItemEdit/ItemEdit'
+
 
 function App() {
 
@@ -10,11 +9,7 @@ function App() {
     <>
       <ItemList />
       <hr />
-      <Item />
-      <hr />
-      <ItemDetail />
-      <hr />
-      <ItemEdit />
+      <ItemDetailpage />
     </>
   )
 }
