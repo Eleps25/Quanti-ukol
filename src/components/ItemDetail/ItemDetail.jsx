@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 export default function ItemDetail(props) {
-  const { id, isImportant, title, body } = props.item;
+  const { isImportant, title, body } = props.item;
+  const id = props.id
 
   return (
     <div>

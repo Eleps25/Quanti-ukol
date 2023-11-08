@@ -36,9 +36,9 @@ export default function ItemDetailPage() {
     <div>
       <h1>{id}</h1>
       {isEditing ? (
-        <ItemEdit item={itemData} changeEdit={handleEdit} />
+        <ItemEdit item={itemData} changeEdit={handleEdit} id={id} />
       ) : (
-        <ItemDetail item={itemData} changeEdit={handleEdit} />
+        <ItemDetail item={itemData} changeEdit={handleEdit} id={id} />
       )}
     </div>
   );

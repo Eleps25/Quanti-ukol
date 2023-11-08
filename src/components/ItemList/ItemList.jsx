@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Item from "../Item/Item";
 
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 
 export default function ItemList() {
@@ -26,11 +26,22 @@ export default function ItemList() {
     getItemList();
   }, []);
 
+  const updateImportant = async (item) => {
+    const itemDoc = doc(db, "items", item.id);
+    try {
+      await updateDoc(itemDoc, { isImportant: !item.isImportant });
+
+      getItemList();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
       <h1>Item List</h1>
       {items.map((item) => (
-        <Item item={item} key={item.id} />
+        <Item item={item} key={item.id} updateItemImportant={() => updateImportant(item)} />
       ))}
     </div>
   );
