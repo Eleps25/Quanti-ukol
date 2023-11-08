@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Item from "../Item/Item";
 
-import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import { collection, doc, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 
 export default function ItemList() {
@@ -37,11 +37,27 @@ export default function ItemList() {
     }
   };
 
+  const deleteItem = async (id) => {
+    const itemDoc = doc(db, "items", id);
+    try {
+      await deleteDoc(itemDoc);
+
+      getItemList();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
       <h1>Item List</h1>
       {items.map((item) => (
-        <Item item={item} key={item.id} updateItemImportant={() => updateImportant(item)} />
+        <Item
+          item={item}
+          key={item.id}
+          updateItemImportant={() => updateImportant(item)}
+          deleteItem={() => deleteItem(item.id)}
+        />
       ))}
     </div>
   );
