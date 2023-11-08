@@ -1,19 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../config/firebase";
 
 import ItemEdit from "../ItemEdit/ItemEdit";
 import ItemDetail from "../ItemDetail/ItemDetail";
 
 export default function ItemDetailPage() {
-    const {id} = useParams();
-  const item = {
-    id: 1,
-    title: "Antique table",
-    body: "A really nice old wooden table with four legs. Probably from 16th century",
-    isImportant: true,
-  };
+  const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
-  const [itemData, setItemData] = useState(item);
+  const [itemData, setItemData] = useState({});
+
+  const docRef = doc(db, "items", id);
+
+  useEffect(() => {
+    const getItemData = async () => {
+        try {
+            const data = await getDoc(docRef);
+            const filteredData = data.data();
+            setItemData(filteredData);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    getItemData()
+  }, []);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -21,7 +34,7 @@ export default function ItemDetailPage() {
 
   return (
     <div>
-        <h1>{id}</h1>
+      <h1>{id}</h1>
       {isEditing ? (
         <ItemEdit item={itemData} changeEdit={handleEdit} />
       ) : (
