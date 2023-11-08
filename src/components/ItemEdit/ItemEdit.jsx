@@ -3,7 +3,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 
 export default function ItemEdit(props) {
-  const { title, body} = props.item;
+  const { title, body, isImportant} = props.item;
 
   const [newTitle, setNewTitle] = useState(title);
   const [newBody, setNewBody] = useState(body);
@@ -15,6 +15,7 @@ export default function ItemEdit(props) {
         value={newTitle}
         placeholder="Title..."
       />
+      <input type="checkbox" value={isImportant} />
       <textarea
         onChange={(e) => setNewBody(e.target.value)}
         value={newBody}
