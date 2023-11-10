@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import Item from "../Item/Item";
+import AddItemForm from "../AddItemForm/AddItemForm";
 
 import {
   collection,
@@ -10,7 +12,8 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import AddItemForm from "../AddItemForm/AddItemForm";
+
+import sortItems from "../../helperFunctions/sortFn";
 
 import Button from "react-bootstrap/Button";
 
@@ -84,55 +87,23 @@ export default function ItemList() {
     }
   };
 
-  const sortAsc = (columnToSort, items) => {
-    const sortedItems = items.toSorted((firstItem, secondItem) => {
-        const columnOne = firstItem[columnToSort].toUpperCase();
-        const columnTwo = secondItem[columnToSort].toUpperCase();
-        if (columnOne < columnTwo) {
-          return -1;
-        }
-        if (columnOne > columnTwo) {
-          return 1;
-        }
-        return 0;
-      });
-    return sortedItems;
-  }
-
-  const sortDesc = (columnToSort, items) => {
-    const sortedItems = items.toSorted((firstItem, secondItem) => {
-        const columnOne = firstItem[columnToSort].toUpperCase();
-        const columnTwo = secondItem[columnToSort].toUpperCase();
-        if (columnOne < columnTwo) {
-          return 1;
-        }
-        if (columnOne > columnTwo) {
-          return -1;
-        }
-        return 0;
-      });
-    return sortedItems;
-  }
-
-
-  const sortItems = () => {
-    if (!isSorted) {
-      setItems(sortAsc("title", items));
-      setIsSorted(true);
-      setIsAscSorted(true);
-    } else if (isSorted && isAscSorted) {
-      setItems(sortDesc("title", items));
-      setIsAscSorted(false);
-    } else {
-      setItems(sortAsc("id", items));
-      setIsSorted(false);
-    }
-  };
-
   return (
     <div>
       <h1>Item List</h1>
-      <Button onClick={sortItems}>Sort Items</Button>
+      <Button
+        onClick={() =>
+          sortItems(
+            items,
+            setItems,
+            isSorted,
+            setIsSorted,
+            isAscSorted,
+            setIsAscSorted
+          )
+        }
+      >
+        Sort Items
+      </Button>
       {items.map((item) => (
         <Item
           item={item}
