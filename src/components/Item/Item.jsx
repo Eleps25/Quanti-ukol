@@ -7,7 +7,7 @@ import "./style.css";
 export default function Item(props) {
   const { id, title, body, isImportant } = props.item;
   return (
-    <Card className="myCard-container text-center">
+    <Card className="myCard-container text-center" bg={isImportant? "warning": null}>
       <Card.Body>
         <Card.Title className="myCard-title">
           {title}
