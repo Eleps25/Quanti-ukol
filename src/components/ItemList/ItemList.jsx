@@ -17,14 +17,19 @@ import sortItems from "../../helperFunctions/sortFn";
 
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
+import Modal from "react-bootstrap/Modal";
+import "./style.css";
 
 export default function ItemList() {
   const [items, setItems] = useState([]);
+  const [isLoad, setIsLoad] = useState(false);
 
   const [newItemTitle, setNewItemTitle] = useState("");
   const [newItemBody, setNewItemBody] = useState("");
   const [isAddingItem, setIsAddingItem] = useState(false);
-  const [isLoad, setIsLoad] = useState(false);
+
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [isSorted, setIsSorted] = useState(false);
   const [isAscSorted, setIsAscSorted] = useState(false);
@@ -66,6 +71,7 @@ export default function ItemList() {
       await deleteDoc(itemDoc);
 
       getItemList();
+      setShowDeleteModal(true);
     } catch (err) {
       console.log(err);
     }
@@ -73,9 +79,6 @@ export default function ItemList() {
 
   const addItem = async (e) => {
     e.preventDefault();
-    if (!newItemBody || !newItemTitle) {
-      return alert("Title or body is empty.");
-    }
     try {
       await addDoc(itemsCollectionRef, {
         title: newItemTitle,
@@ -84,6 +87,7 @@ export default function ItemList() {
       });
 
       getItemList();
+      setShowAddModal(true);
       setIsAddingItem(false);
     } catch (err) {
       console.log(err);
@@ -93,45 +97,87 @@ export default function ItemList() {
   return (
     <div>
       <h1>Item List</h1>
-      {isLoad ? (
-        items.map((item) => (
-          <Item
-            item={item}
-            key={item.id}
-            updateItemImportant={() => updateImportant(item)}
-            deleteItem={() => deleteItem(item.id)}
+      <section>
+        {isLoad ? (
+          items.map((item) => (
+            <Item
+              item={item}
+              key={item.id}
+              updateItemImportant={() => updateImportant(item)}
+              deleteItem={() => deleteItem(item.id)}
+            />
+          ))
+        ) : (
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        )}
+      </section>
+      <section>
+        <Button
+          onClick={() =>
+            sortItems(
+              items,
+              setItems,
+              isSorted,
+              setIsSorted,
+              isAscSorted,
+              setIsAscSorted
+            )
+          }
+        >
+          Sort Items
+        </Button>
+        <Button variant="primary" onClick={() => setIsAddingItem(true)}>
+          Add new Item
+        </Button>
+        {isAddingItem && (
+          <AddItemForm
+            addItem={addItem}
+            setTitle={setNewItemTitle}
+            setBody={setNewItemBody}
+            stopAddingItem={() => setIsAddingItem(false)}
           />
-        ))
-      ) : (
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      )}
-      <Button
-        onClick={() =>
-          sortItems(
-            items,
-            setItems,
-            isSorted,
-            setIsSorted,
-            isAscSorted,
-            setIsAscSorted
-          )
-        }
-      >
-        Sort Items
-      </Button>
-      <Button variant="primary" onClick={() => setIsAddingItem(true)}>
-        Add new Item
-      </Button>
-      {isAddingItem && (
-        <AddItemForm
-          addItem={addItem}
-          setTitle={setNewItemTitle}
-          setBody={setNewItemBody}
-          stopAddingItem={() => setIsAddingItem(false)}
-        />
-      )}
+        )}
+      </section>
+      <section>
+        <Modal
+          show={showAddModal}
+          onHide={() => setShowAddModal(false)}
+          backdrop="static"
+          keyboard={false}
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton className="modal-add">
+            <Modal.Title>Success</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Item added.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => setShowAddModal(false)}>
+              Understood
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <Modal
+          show={showDeleteModal}
+          onHide={() => setShowDeleteModal(false)}
+          backdrop="static"
+          keyboard={false}
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton className="modal-delete">
+            <Modal.Title>Info</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Item Deleted.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="info" onClick={() => setShowDeleteModal(false)}>
+              Understood
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </section>
     </div>
   );
 }

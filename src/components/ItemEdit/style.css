@@ -1,0 +1,9 @@
+.modal-error {
+    background-color: #DC3545;
+    color: white;
+}
+
+.modal-update {
+    background-color: #28a745;
+    color: white;
+}
