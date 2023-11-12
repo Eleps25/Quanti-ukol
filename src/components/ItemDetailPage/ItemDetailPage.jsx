@@ -53,7 +53,7 @@ export default function ItemDetailPage() {
   };
   return (
     <div className="detailPage-content">
-      <h1>{itemData.title}</h1>
+      <h1 style={{color: "white"}}>{itemData.title}</h1>
       <div className="detailPage-data">{showItems()}</div>
     </div>
   );
