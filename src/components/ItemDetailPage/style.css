@@ -1,0 +1,19 @@
+.detailPage-content {
+  width: 100vw;
+  height: 100vh;
+}
+
+.detailPage-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: "100vw";
+  height: "100vh";
+}
+
+h1 {
+  background-color: #86b7fe;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}

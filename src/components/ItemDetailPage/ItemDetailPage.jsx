@@ -9,6 +9,8 @@ import ItemDetail from "../ItemDetail/ItemDetail";
 
 import Spinner from "react-bootstrap/Spinner";
 
+import "./style.css";
+
 export default function ItemDetailPage() {
   const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
@@ -44,15 +46,15 @@ export default function ItemDetailPage() {
         </Spinner>
       );
     } else if (isLoad && isEditing) {
-      return <ItemEdit item={itemData} changeEdit={handleEdit} id={id} />
+      return <ItemEdit item={itemData} changeEdit={handleEdit} id={id} />;
     } else {
-      return <ItemDetail item={itemData} changeEdit={handleEdit} id={id} />;
+      return <ItemDetail item={itemData} changeEdit={handleEdit} />;
     }
   };
   return (
-    <div>
-      <h1>{id}</h1>
-      {showItems()}
+    <div className="detailPage-content">
+      <h1>{itemData.title}</h1>
+      <div className="detailPage-data">{showItems()}</div>
     </div>
   );
 }
