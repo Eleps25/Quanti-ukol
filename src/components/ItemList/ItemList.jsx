@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import Item from "../Item/Item";
+import AddItemForm from "../AddItemForm/AddItemForm";
 
 import {
   collection,
@@ -10,9 +12,10 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import AddItemForm from "../AddItemForm/AddItemForm";
 
-import  Button  from "react-bootstrap/Button";
+import sortItems from "../../helperFunctions/sortFn";
+
+import Button from "react-bootstrap/Button";
 
 export default function ItemList() {
   const [items, setItems] = useState([]);
@@ -20,6 +23,9 @@ export default function ItemList() {
   const [newItemTitle, setNewItemTitle] = useState("");
   const [newItemBody, setNewItemBody] = useState("");
   const [isAddingItem, setIsAddingItem] = useState(false);
+
+  const [isSorted, setIsSorted] = useState(false);
+  const [isAscSorted, setIsAscSorted] = useState(false);
 
   const itemsCollectionRef = collection(db, "items");
 
@@ -84,6 +90,20 @@ export default function ItemList() {
   return (
     <div>
       <h1>Item List</h1>
+      <Button
+        onClick={() =>
+          sortItems(
+            items,
+            setItems,
+            isSorted,
+            setIsSorted,
+            isAscSorted,
+            setIsAscSorted
+          )
+        }
+      >
+        Sort Items
+      </Button>
       {items.map((item) => (
         <Item
           item={item}
@@ -92,8 +112,17 @@ export default function ItemList() {
           deleteItem={() => deleteItem(item.id)}
         />
       ))}
-      <Button variant="primary" onClick={() => setIsAddingItem(true)}>Add new Item</Button>
-      {isAddingItem && <AddItemForm addItem={addItem} setTitle={setNewItemTitle} setBody={setNewItemBody} stopAddingItem={() => setIsAddingItem(false)}/>}
+      <Button variant="primary" onClick={() => setIsAddingItem(true)}>
+        Add new Item
+      </Button>
+      {isAddingItem && (
+        <AddItemForm
+          addItem={addItem}
+          setTitle={setNewItemTitle}
+          setBody={setNewItemBody}
+          stopAddingItem={() => setIsAddingItem(false)}
+        />
+      )}
     </div>
   );
 }
