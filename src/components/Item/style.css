@@ -1,5 +1,8 @@
 .myCard-container{
-    width: 18rem
+    width: 18rem;
+    height: 20vh !important;
+    margin: 10px 0px;
+    margin-right: 0px;
 }
 
 .myCard-title {
@@ -12,9 +15,7 @@
     justify-content: space-around;
 }
 
-.myCard-favourite{
-    content: "\f0c9";
-}
+
 
 input {
     display: none
