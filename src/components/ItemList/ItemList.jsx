@@ -16,6 +16,7 @@ import { db } from "../../config/firebase";
 import sortItems from "../../helperFunctions/sortFn";
 
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
 export default function ItemList() {
   const [items, setItems] = useState([]);
@@ -23,6 +24,7 @@ export default function ItemList() {
   const [newItemTitle, setNewItemTitle] = useState("");
   const [newItemBody, setNewItemBody] = useState("");
   const [isAddingItem, setIsAddingItem] = useState(false);
+  const [isLoad, setIsLoad] = useState(false);
 
   const [isSorted, setIsSorted] = useState(false);
   const [isAscSorted, setIsAscSorted] = useState(false);
@@ -37,6 +39,7 @@ export default function ItemList() {
         id: doc.id,
       }));
       setItems(filteredData);
+      setTimeout(() => setIsLoad(true), 1000);
     } catch (err) {
       console.log(err);
     }
@@ -90,6 +93,20 @@ export default function ItemList() {
   return (
     <div>
       <h1>Item List</h1>
+      {isLoad ? (
+        items.map((item) => (
+          <Item
+            item={item}
+            key={item.id}
+            updateItemImportant={() => updateImportant(item)}
+            deleteItem={() => deleteItem(item.id)}
+          />
+        ))
+      ) : (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
       <Button
         onClick={() =>
           sortItems(
@@ -104,14 +121,6 @@ export default function ItemList() {
       >
         Sort Items
       </Button>
-      {items.map((item) => (
-        <Item
-          item={item}
-          key={item.id}
-          updateItemImportant={() => updateImportant(item)}
-          deleteItem={() => deleteItem(item.id)}
-        />
-      ))}
       <Button variant="primary" onClick={() => setIsAddingItem(true)}>
         Add new Item
       </Button>

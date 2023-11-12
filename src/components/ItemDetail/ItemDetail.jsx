@@ -9,7 +9,7 @@ export default function ItemDetail(props) {
   return (
     <div>
       <h1>Item Detail - {id}</h1>
-      <input type="checkbox" checked={isImportant} />
+      <input type="checkbox" checked={isImportant} readOnly />
       <h2>{title}</h2>
       <p>{body}</p>
       <div>

@@ -42,7 +42,7 @@ export default function ItemEdit(props) {
         value={newTitle}
         placeholder="Title..."
       />
-      <input type="checkbox" checked={isImportant} disabled />
+      <input type="checkbox" checked={isImportant} readOnly />
       <input
         onChange={(e) => setNewBody(e.target.value)}
         value={newBody}
