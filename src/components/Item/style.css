@@ -1,0 +1,22 @@
+.myCard-container{
+    width: 18rem;
+    height: 20vh !important;
+    margin: 10px 0px;
+    margin-right: 0px;
+}
+
+.myCard-title {
+    display: flex;
+    justify-content: space-around;
+}
+
+.myCard-footer{
+    display: flex;
+    justify-content: space-around;
+}
+
+
+
+input {
+    display: none
+}

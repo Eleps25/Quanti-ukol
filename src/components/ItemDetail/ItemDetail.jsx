@@ -2,20 +2,20 @@ import { Link } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 
+import "./style.css";
+
 export default function ItemDetail(props) {
-  const { isImportant, title, body } = props.item;
-  const id = props.id
-  
+  const { body } = props.item;
+
   return (
-    <div>
-      <h1>Item Detail - {id}</h1>
-      <input type="checkbox" checked={isImportant} />
-      <h2>{title}</h2>
+    <div className="ItemDetail-container">
       <p>{body}</p>
-      <div>
-      <Button onClick={props.changeEdit}>Edit</Button>
-      <Link to={"/itemlist"}><Button type="button">Back</Button></Link>
-      </div>
+      <section className="ItemDetail-buttons">
+        <Button onClick={props.changeEdit}>Edit</Button>
+        <Link to={"/itemlist"}>
+          <Button type="button">Back</Button>
+        </Link>
+      </section>
     </div>
   );
 }

@@ -7,39 +7,54 @@ import { db } from "../../config/firebase";
 import ItemEdit from "../ItemEdit/ItemEdit";
 import ItemDetail from "../ItemDetail/ItemDetail";
 
+import Spinner from "react-bootstrap/Spinner";
+
+import "./style.css";
+
 export default function ItemDetailPage() {
   const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [itemData, setItemData] = useState({});
+  const [isLoad, setIsLoad] = useState(false);
 
   const docRef = doc(db, "items", id);
 
   useEffect(() => {
     const getItemData = async () => {
-        try {
-            const data = await getDoc(docRef);
-            const filteredData = data.data();
-            setItemData(filteredData);
-        } catch (err) {
-            console.log(err);
-        }
+      try {
+        const data = await getDoc(docRef);
+        const filteredData = data.data();
+        setItemData(filteredData);
+        setTimeout(() => setIsLoad(true), 1000);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
-    getItemData()
+    getItemData();
   }, []);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
   };
 
+  const showItems = () => {
+    if (!isLoad) {
+      return (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      );
+    } else if (isLoad && isEditing) {
+      return <ItemEdit item={itemData} changeEdit={handleEdit} id={id} />;
+    } else {
+      return <ItemDetail item={itemData} changeEdit={handleEdit} />;
+    }
+  };
   return (
-    <div>
-      <h1>{id}</h1>
-      {isEditing ? (
-        <ItemEdit item={itemData} changeEdit={handleEdit} id={id} />
-      ) : (
-        <ItemDetail item={itemData} changeEdit={handleEdit} id={id} />
-      )}
+    <div className="detailPage-content">
+      <h1 style={{color: "white"}}>{itemData.title}</h1>
+      <div className="detailPage-data">{showItems()}</div>
     </div>
   );
 }
