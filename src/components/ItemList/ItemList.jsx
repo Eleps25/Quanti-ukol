@@ -99,55 +99,75 @@ export default function ItemList() {
 
   return (
     <div>
-      <h1>Item List</h1>
-      <Container>
-        <Row xs="auto" sm="auto" md="auto" lg="auto" className="justify-content-center">
-          {isLoad ? (
-            items.map((item) => (
-              <Col key={item.id}>
-                <Item
-                  item={item}
-                  key={item.id}
-                  updateItemImportant={() => updateImportant(item)}
-                  deleteItem={() => deleteItem(item.id)}
-                />
-              </Col>
-            ))
-          ) : (
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          )}
-        </Row>
-      </Container>
+      <header className="itemList-myHeader">
+        <h1>Item List</h1>
+        <section className="itemList-buttons">
+          <Button
+            onClick={() =>
+              sortItems(
+                items,
+                setItems,
+                isSorted,
+                setIsSorted,
+                isAscSorted,
+                setIsAscSorted
+              )
+            }
+          >
+            Sort Items
+          </Button>
+          <Button variant="primary" onClick={() => setIsAddingItem(true)}>
+            Add new Item
+          </Button>
+        </section>
+      </header>
       <section>
-        <Button
-          onClick={() =>
-            sortItems(
-              items,
-              setItems,
-              isSorted,
-              setIsSorted,
-              isAscSorted,
-              setIsAscSorted
-            )
-          }
+        <Container>
+          <Row
+            xs="auto"
+            sm="auto"
+            md="auto"
+            lg="auto"
+            className="justify-content-center"
+          >
+            {isLoad ? (
+              items.map((item) => (
+                <Col key={item.id}>
+                  <Item
+                    item={item}
+                    key={item.id}
+                    updateItemImportant={() => updateImportant(item)}
+                    deleteItem={() => deleteItem(item.id)}
+                  />
+                </Col>
+              ))
+            ) : (
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )}
+          </Row>
+        </Container>
+        <Modal
+          show={isAddingItem}
+          onHide={() => setIsAddingItem(false)}
+          backdrop="static"
+          keyboard={false}
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
         >
-          Sort Items
-        </Button>
-        <Button variant="primary" onClick={() => setIsAddingItem(true)}>
-          Add new Item
-        </Button>
-        {isAddingItem && (
-          <AddItemForm
-            addItem={addItem}
-            setTitle={setNewItemTitle}
-            setBody={setNewItemBody}
-            stopAddingItem={() => setIsAddingItem(false)}
-          />
-        )}
-      </section>
-      <section>
+          <Modal.Header closeButton className="modal-add">
+            <Modal.Title>Add new item</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <AddItemForm
+              addItem={addItem}
+              setTitle={setNewItemTitle}
+              setBody={setNewItemBody}
+              stopAddingItem={() => setIsAddingItem(false)}
+            />
+          </Modal.Body>
+        </Modal>
         <Modal
           show={showAddModal}
           onHide={() => setShowAddModal(false)}

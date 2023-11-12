@@ -4,6 +4,18 @@
     flex-wrap: wrap;
 }
 
+.itemList-myHeader {
+    background-color: #86b7fe;
+    color: white
+}
+
+.itemList-buttons {
+    display: flex;
+    justify-content: space-around;
+    padding: 5px;
+    background-color: #86b7fe;
+}
+
 .modal-add {
     background-color: #28a745;
     color: white;
@@ -12,4 +24,8 @@
 .modal-delete {
     background-color: #17a2b8;
     color: white;
+}
+
+h1 {
+    text-align: center;
 }
