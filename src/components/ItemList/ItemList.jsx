@@ -97,87 +97,87 @@ export default function ItemList() {
   return (
     <div>
       <h1>Item List</h1>
-      <section>
-        {isLoad ? (
-          items.map((item) => (
-            <Item
-              item={item}
-              key={item.id}
-              updateItemImportant={() => updateImportant(item)}
-              deleteItem={() => deleteItem(item.id)}
+        <section className="itemList-container">
+          {isLoad ? (
+            items.map((item) => (
+              <Item
+                item={item}
+                key={item.id}
+                updateItemImportant={() => updateImportant(item)}
+                deleteItem={() => deleteItem(item.id)}
+              />
+            ))
+          ) : (
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          )}
+        </section>
+        <section>
+          <Button
+            onClick={() =>
+              sortItems(
+                items,
+                setItems,
+                isSorted,
+                setIsSorted,
+                isAscSorted,
+                setIsAscSorted
+                )
+              }
+              >
+            Sort Items
+          </Button>
+          <Button variant="primary" onClick={() => setIsAddingItem(true)}>
+            Add new Item
+          </Button>
+          {isAddingItem && (
+            <AddItemForm
+              addItem={addItem}
+              setTitle={setNewItemTitle}
+              setBody={setNewItemBody}
+              stopAddingItem={() => setIsAddingItem(false)}
             />
-          ))
-        ) : (
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        )}
-      </section>
-      <section>
-        <Button
-          onClick={() =>
-            sortItems(
-              items,
-              setItems,
-              isSorted,
-              setIsSorted,
-              isAscSorted,
-              setIsAscSorted
-            )
-          }
-        >
-          Sort Items
-        </Button>
-        <Button variant="primary" onClick={() => setIsAddingItem(true)}>
-          Add new Item
-        </Button>
-        {isAddingItem && (
-          <AddItemForm
-            addItem={addItem}
-            setTitle={setNewItemTitle}
-            setBody={setNewItemBody}
-            stopAddingItem={() => setIsAddingItem(false)}
-          />
-        )}
-      </section>
-      <section>
-        <Modal
-          show={showAddModal}
-          onHide={() => setShowAddModal(false)}
-          backdrop="static"
-          keyboard={false}
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton className="modal-add">
-            <Modal.Title>Success</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Item added.</Modal.Body>
-          <Modal.Footer>
-            <Button variant="success" onClick={() => setShowAddModal(false)}>
-              Understood
-            </Button>
-          </Modal.Footer>
-        </Modal>
-        <Modal
-          show={showDeleteModal}
-          onHide={() => setShowDeleteModal(false)}
-          backdrop="static"
-          keyboard={false}
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton className="modal-delete">
-            <Modal.Title>Info</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Item Deleted.</Modal.Body>
-          <Modal.Footer>
-            <Button variant="info" onClick={() => setShowDeleteModal(false)}>
-              Understood
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </section>
+          )}
+        </section>
+        <section>
+          <Modal
+            show={showAddModal}
+            onHide={() => setShowAddModal(false)}
+            backdrop="static"
+            keyboard={false}
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+          >
+            <Modal.Header closeButton className="modal-add">
+              <Modal.Title>Success</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Item added.</Modal.Body>
+            <Modal.Footer>
+              <Button variant="success" onClick={() => setShowAddModal(false)}>
+                Understood
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <Modal
+            show={showDeleteModal}
+            onHide={() => setShowDeleteModal(false)}
+            backdrop="static"
+            keyboard={false}
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+          >
+            <Modal.Header closeButton className="modal-delete">
+              <Modal.Title>Info</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Item Deleted.</Modal.Body>
+            <Modal.Footer>
+              <Button variant="info" onClick={() => setShowDeleteModal(false)}>
+                Understood
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </section>
     </div>
   );
 }

@@ -1,3 +1,9 @@
+.itemList-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
 .modal-add {
     background-color: #28a745;
     color: white;

@@ -1,4 +1,21 @@
+.myCard-container{
+    width: 18rem
+}
+
 .myCard-title {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+}
+
+.myCard-footer{
+    display: flex;
+    justify-content: space-around;
+}
+
+.myCard-favourite{
+    content: "\f0c9";
+}
+
+input {
+    display: none
 }
